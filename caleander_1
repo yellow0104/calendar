@@ -1,0 +1,110 @@
+# 테스트 버전
+from tkinter import *
+import calendar
+from datetime import datetime
+
+root = Tk()
+root.geometry("860x560")
+root.resizable(False,False)
+root.title("memo py")
+
+a = datetime.now() #지금 시간 받아오기
+month = f"{a.year}년{a.month}월"
+today = a.day
+today2 = a.year, a.month, a.day
+days = calendar.monthrange(a.year, a.month)
+days = days[1]
+
+#메뉴 만들기
+# menu = Menu(root)
+
+# menu_file = Menu(menu, tearoff=0)
+# menu_file = Menu(menu, tearoff=0)
+# menu_file.add_command(label="Open File...")
+# menu_file.add_separator()
+# menu_file.add_command(label="Save All") # 비활성화
+# menu_file.add_separator()
+# menu_file.add_command(label="Exit", command=root.quit)
+# menu.add_cascade(label="File", menu=menu_file)
+
+
+# root.config(menu=menu)
+
+#달력 출력하기
+for d in range(1,13):
+    if d == today:
+        print("1")
+    c = Label(root, text=d, width=10)
+    e = c.place(x=-70 + d * 70, y=100)
+
+for d in range(13,24):
+    if d == today:
+        print("2")
+    c = Label(root, text=d, width=10)
+    e = c.place(x=-911 + d * 70, y=150)
+for d in range(24,days+1):
+    if d == today:
+        c = Label(root, text=d, width=10, fg="green")
+    else:
+        c = Label(root, text=d, width=10)
+
+    e = c.place(x=-1680 + d * 70, y=200)
+
+#잡다한 레이블
+l = Label(root, text="memo", font=("", 45))
+l.pack()
+l2 = Label(root, text=month)
+l2.pack()
+l3 = Label(root, text="오늘 하루 일정 짜기")
+l3.pack()
+l3.place(x=5,y=250)
+
+tL = Label(root, text="0~5시")
+tL.pack()
+tL.place(x=5,y=300)
+tt = Text(root, width=20, height=8)
+tt.pack()
+tt.place(x=50,y=280)
+############
+tL2 = Label(root, text="5~9시")
+tL2.pack()
+tL2.place(x=5,y=420)
+tt2 = Text(root, width=20, height=8)
+tt2.pack()
+tt2.place(x=50,y=400)
+#############
+tL3 = Label(root, text="9~21시")
+tL3.pack()
+tL3.place(x=205,y=300)
+tt3 = Text(root, width=20, height=8)
+tt3.pack()
+tt3.place(x=270,y=280)
+#############
+tL4 = Label(root, text="21~24시")
+tL4.pack()
+tL4.place(x=205,y=420)
+tt4 = Text(root, width=20, height=8)
+tt4.pack()
+tt4.place(x=270,y=400)
+
+
+def bt_cmd():
+    number = tt.get("1.0",END)
+    number2 = tt2.get("1.0",END)
+    number3 = tt3.get("1.0",END)
+    number4 = tt4.get("1.0",END)
+    try:
+        with open("log.txt", "r", encoding="utf-8") as f:
+         g = f.read
+        with open("log.txt", "w", encoding="utf-8") as f:
+            g2 = f.write(f"{g}\n=================={today2}\n0~5시:{number}\n5~9시:{number2}\n9~21시:{number3}\n21~24시:{number4}")
+    except FileNotFoundError:
+        with open("log.txt", "w", encoding="utf-8") as f:
+            f.write(f"first.\n=================={today2}\n0~5시:{number}\n5~9시:{number2}\n9~21시:{number3}\n21~24시:{number4}")
+
+
+bt = Button(text="저장", command=bt_cmd)
+bt.pack()
+bt.place(x=10,y=450)
+
+root.mainloop()
